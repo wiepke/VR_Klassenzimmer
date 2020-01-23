@@ -1,0 +1,14 @@
+#classPic{
+	width: 534px;
+	height: 513px;
+}
+
+.studentInMap{
+	cursor: pointer;
+}
+
+#imageSelection{
+	border: 2px solid #FF0000;
+	z-index: 1;
+	position: absolute;
+}

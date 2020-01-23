@@ -1,0 +1,251 @@
+<html>
+<head>
+<title> control unity </title>
+<meta charset="utf-8">
+
+<!-- Data Package -->
+<script> //holds mapData for students
+let students = [{
+		x: 65,
+		y: 390,
+		alt: '01L',
+	},
+	{
+		x: 115,
+		y: 390,
+		alt: '01R',
+	},
+	{
+		x: 240,
+		y: 390,
+		alt: '02L',
+	},
+	{
+		x: 290,
+		y: 390,
+		alt: '02R',
+	},
+	{
+		x: 420,
+		y: 390,
+		alt: '03L',
+	},
+	{
+		x: 460,
+		y: 390,
+		alt: '03R',
+	},
+	{
+		x: 80,
+		y: 295,
+		alt: '04L',
+	},
+	{
+		x: 120,
+		y: 295,
+		alt: '04R',
+	},
+	{
+		x: 255,
+		y: 295,
+		alt: '05L',
+	},
+	{
+		x: 290,
+		y: 295,
+		alt: '05R',
+	},
+	{
+		x: 410,
+		y: 300,
+		alt: '06L',
+	},
+	{
+		x: 455,
+		y: 300,
+		alt: '06R',
+	},
+	{
+		x: 90,
+		y: 190,
+		alt: '07L',
+	},
+	{
+		x: 130,
+		y: 190,
+		alt: '07R',
+	},
+	{
+		x: 255,
+		y: 195,
+		alt: '08L',
+	},
+	{
+		x: 295,
+		y: 195,
+		alt: '08R',
+	},
+	{
+		x: 410,
+		y: 200,
+		alt: '09L',
+	},
+	{
+		x: 445,
+		y: 200,
+		alt: '09R',
+	},
+	{
+		x: 90,
+		y: 110,
+		alt: '10L',
+	},
+	{
+		x: 130,
+		y: 110,
+		alt: '10R',
+	},
+	{
+		x: 250,
+		y: 110,
+		alt: '11L',
+	},
+	{
+		x: 285,
+		y: 110,
+		alt: '11R',
+	},
+	{
+		x: 390,
+		y: 110,
+		alt: '12L',
+	},
+	{
+		x: 430,
+		y: 110,
+		alt: '12R',
+	},
+	{
+		x: 95,
+		y: 20,
+		alt: '13L',
+	},
+	{
+		x: 135,
+		y: 20,
+		alt: '13R',
+	},
+	{
+		x: 245,
+		y: 20,
+		alt: '14L',
+	},
+	{
+		x: 285,
+		y: 20,
+		alt: '14R',
+	},
+	{
+		x: 380,
+		y: 20,
+		alt: '15L',
+	},
+	{
+		x: 420,
+		y: 20,
+		alt: '15R',
+	}
+	]
+</script>
+
+<!-- jquery Package -->
+<link rel="stylesheet" type="text/css" href="css/dropdown.css"/>
+<script src="https://kit.fontawesome.com/7edd8532c5.js" crossorigin="anonymous"></script>
+<script src="js/jquery1.9.1.js" type="text/javascript"></script>
+<script src="js/jqueryTmplMin.js" type="text/javascript"></script>
+
+<!-- Image Mapster Package -->
+<!--<script type="text/javascript" src="js/imageMapster/examples/redist/jquery.1.7.2.min.js"></script>-->
+<script type="text/javascript" src="js/imageMapster/src/redist/when.js"></script>
+<script type="text/javascript" src="js/imageMapster/src/core.js"></script>
+<script type="text/javascript" src="js/imageMapster/src/graphics.js"></script>
+<script type="text/javascript" src="js/imageMapster/src/mapimage.js"></script>
+<script type="text/javascript" src="js/imageMapster/src/mapdata.js"></script>
+<script type="text/javascript" src="js/imageMapster/src/areadata.js"></script>
+<script type="text/javascript" src="js/imageMapster/src/areacorners.js"></script>
+<script type="text/javascript" src="js/imageMapster/src/scale.js"></script>
+<script type="text/javascript" src="js/imageMapster/src/tooltip.js"></script>
+
+<!-- my Scripts -->
+<script src="js/webDisplay.js"></script>
+<script src="js/postScripts.js"></script>
+<link rel="stylesheet" type="text/css" href="css/styles.css"/>
+
+</head>
+<body>
+<img src="pictures/Draufsicht2.png" usemap="#Mapi" id="classPic">
+<map name="Mapi" id="Mapi">	
+	<script id="studentTemplate" type="text/x-jQuery-tmpl">
+	<area href="#" shape="circle" coords="${x},${y},25" class="studentInMap" alt="${alt}" student="">
+	</script>
+</map>
+
+<br>
+<div class="dropdown">
+  <button onclick="stoerfct()" class="dropbtn" id="singleMisbehaviour">Fehlverhalten <i class="fas fa-caret-down"></i></button>
+  <div id="singleMisbehaviourCollection" class="dropdown-content">
+	<script id="singleMisbehaviourTemplate" type="text/x-jQuery-tmpl">
+	<a name="${misbehaviour}" class="distortion" onClick="triggerDistortion('${misbehaviour}');">
+		${misbehaviour}
+	</a>
+	</script>
+  </div>
+</div> 
+<!--
+<div class="dropdown">
+  <button onclick="stoerfctall()" class="dropbtn">Stoerung für alle wählen</button>
+  <div id="allMisbehaviourCollection" class="dropdown-content">
+  	<script id="allMisbehaviourTemplate" type="text/x-jQuery-tmpl">
+    <a name="${misbehaviour}" class="distortion" onClick="triggerDistortionForAll('${misbehaviour}');">
+		${misbehaviour}
+	</a>
+	</script>
+  </div>
+</div>
+--> 
+<div class="dropdown">
+  <button onclick="mitarbeitfct()" class="dropbtn">Mitarbeit <i class="fas fa-caret-down"></i></button>
+  <div id="mitarbeitDropDown" class="dropdown-content">
+    <div id="mitarbeitCollection">
+	  <script id="mitarbeitTemplate" type="text/x-jQuery-tmpl">
+      <a name="${goodBehaviour}" class="mitarbeit" onClick="triggerDistortion('${goodBehaviour}');">
+		${goodBehaviour}
+	  </a>
+	  </script>
+    </div>
+    <div id="mitarbeitCollectionAll">
+      <p class="mitarbeit">_______für alle_______</p>
+	  <script id="allMitarbeitTemplate" type="text/x-jQuery-tmpl">
+        <a name="${goodBehaviour}" class="mitarbeit" onClick="triggerDistortionForAll('${goodBehaviour}');">
+		  ${goodBehaviour}
+	    </a>
+	  </script>
+    </div>
+  </div> 
+</div>
+
+<div class="dropdown">
+  <button onclick="noisefct()" class="dropbtn">RaumLautstaerke <i class="fas fa-caret-down"></i></button>
+  <div id="noiseCollection" class="dropdown-content">
+  	<script id="noiseTemplate" type="text/x-jQuery-tmpl">
+    <a name="${noiseDirection}" class="noise" onClick="changeNoiseLevel('${noiseDirection}');">
+		<i class="fas fa-volume-${noiseDirection}"></i> ${noiseDirection}
+	</a>
+	</script>
+  </div>
+</div> 
+<div id="timeLine"></div>
+
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+#################
+## Nonpublic stuff and generated junk
+#################
+
+examples_source/
+archived/
+website/
+./*.zip
+./*.js
+src/*.min.js
+*.sln
+*.suo
+*.bat
+tests/*.min.js
+
