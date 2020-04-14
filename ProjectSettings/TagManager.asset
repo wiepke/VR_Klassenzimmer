@@ -9,6 +9,7 @@ TagManager:
   - FxTemporaire
   - Student
   - BlackBoard
+  - lightbulb
   layers:
   - Default
   - TransparentFX

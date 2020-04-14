@@ -46,7 +46,23 @@ public class ConfigureStudent : MonoBehaviour
             attributes.WhenToBlink = localDate.Minute * 60 + localDate.Second + rnd.Next(5, 15);
             attributes.TimeDelayToLastMisbehaviour = localDate.Minute * 60 + localDate.Second;
             attributes.ChanceToMisbehave = 0.5f;
-            studentAttributes.Add(student, attributes);   //deprecated, since Morph3D is not supported anymore
+            studentAttributes.Add(student, attributes);   
+
+            //Add all scripts to students to give them kinda individual characters
+                student.AddComponent(typeof(MixamoAttechment));
+                student.AddComponent(typeof(playSound));
+                student.AddComponent(typeof(thrower));
+                student.AddComponent(typeof(breathingStudent));
+                student.AddComponent(typeof(IKControl));
+                BoxCollider BC = student.AddComponent(typeof(BoxCollider)) as BoxCollider;
+                BC.center = new Vector3(0.0022482f, 0.337685f, 0.0786477f);
+                BC.size = new Vector3(0.3283885f, 1.067539f, 0.514855f);
+                AudioSource AS = student.AddComponent(typeof(AudioSource)) as AudioSource;
+                AS.loop = false;
+                AS.playOnAwake = false;
+                AS.spatialBlend = 1;
+                AS.rolloffMode = AudioRolloffMode.Linear;
+                AS.maxDistance = 10;
         }
     }
 
@@ -67,7 +83,16 @@ public class ConfigureStudent : MonoBehaviour
     {
         foreach (GameObject student in allStudents)
         {
-            setLookDirection(student);
+            if(!(studentAttributes[student].isDistorting) && (studentAttributes[student].LastGoodBehaviour == "breathing"))
+            {
+                student.GetComponent<IKControl>().ikActive = true;
+                setLookDirection(student);
+            }
+            else
+            {
+                student.GetComponent<IKControl>().ikActive = false;
+            }
+            
 
             if (MenuDataHolder.isAutomaticIntervention)
             {
@@ -78,8 +103,6 @@ public class ConfigureStudent : MonoBehaviour
                     if (distance <= teacherPresenceSize)
                     {
                         triggerLastGoodBehaviour(student);
-                        studentAttributes[student].isDistorting = false;
-                        MenuDataHolder.MisbehaviourSolved++;
                     }
                 }
                 
@@ -87,8 +110,10 @@ public class ConfigureStudent : MonoBehaviour
         }
     }
 
-    private static void triggerLastGoodBehaviour(GameObject student)
+    public static void triggerLastGoodBehaviour(GameObject student)
     {
+        studentAttributes[student].isDistorting = false;
+        MenuDataHolder.MisbehaviourSolved++;
         student.GetComponent<IKControl>().ikActive = true;
         Animator anim = student.GetComponent<Animator>();
         anim.SetTrigger(studentAttributes[student].LastGoodBehaviour);

@@ -9,7 +9,7 @@ public class IKControl : MonoBehaviour
 
     protected Animator animator;
 
-    public bool ikActive = false;//if active their head follows the teacher
+    public bool ikActive = true;//if active their head follows the teacher
 
     [SerializeField]
     private float ikIntensity = 0.8f;           //

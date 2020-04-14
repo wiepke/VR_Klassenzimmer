@@ -865,13 +865,13 @@ namespace Valve.VR.InteractionSystem
                     controllerObject.layer = gameObject.layer;
                     controllerObject.tag = gameObject.tag;
                     AttachObject(controllerObject);
+
+                    controller.TriggerHapticPulse(800);
+
+                    // If the player's scale has been changed the object to attach will be the wrong size.
+                    // To fix this we change the object's scale back to its original, pre-attach scale.
+                    controllerObject.transform.localScale = controllerPrefab.transform.localScale;
                 }
-				controller.TriggerHapticPulse( 800 );
-
-				// If the player's scale has been changed the object to attach will be the wrong size.
-				// To fix this we change the object's scale back to its original, pre-attach scale.
-				controllerObject.transform.localScale = controllerPrefab.transform.localScale;
-
 				this.BroadcastMessage( "OnHandInitialized", index, SendMessageOptions.DontRequireReceiver ); // let child objects know we've initialized
 			}
 		}

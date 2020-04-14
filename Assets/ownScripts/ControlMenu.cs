@@ -19,6 +19,7 @@ public class ControlMenu : MonoBehaviour
     public GameObject evalDistance;
     public GameObject evalMisbCount;
     public GameObject evalMisbSolved;
+    public GameObject evalMisbSeen;
 
 
     public void Start()
@@ -32,6 +33,7 @@ public class ControlMenu : MonoBehaviour
         evalDistance.GetComponent<TextMeshProUGUI>().text = MenuDataHolder.walkedDistance.ToString();
         evalMisbCount.GetComponent<TextMeshProUGUI>().text = MenuDataHolder.MisbehaviourCount.ToString();
         evalMisbSolved.GetComponent<TextMeshProUGUI>().text = MenuDataHolder.MisbehaviourSolved.ToString();
+        evalMisbSeen.GetComponent<TextMeshProUGUI>().text = MenuDataHolder.MisbehaviourSeen.ToString();
     }
     public void loadFrontalScene()
     {
@@ -40,6 +42,7 @@ public class ControlMenu : MonoBehaviour
         MenuDataHolder.walkedDistance = 0;
         MenuDataHolder.MisbehaviourCount = 0;
         MenuDataHolder.MisbehaviourSolved = 0;
+        MenuDataHolder.MisbehaviourSeen = 0;
         SceneManager.LoadScene(1);
     }
     public void loadGroupScene()
@@ -49,6 +52,7 @@ public class ControlMenu : MonoBehaviour
         MenuDataHolder.walkedDistance = 0;
         MenuDataHolder.MisbehaviourCount = 0;
         MenuDataHolder.MisbehaviourSolved = 0;
+        MenuDataHolder.MisbehaviourSeen = 0;
         SceneManager.LoadScene(2);
     }
 

@@ -24,5 +24,7 @@ public static class MenuDataHolder
 
     public static int MisbehaviourSolved { get; set; } = 0;
 
+    public static int MisbehaviourSeen { get; set; } = 0;
+
     public static int repetitionCount { get; set; } = 0;
 }

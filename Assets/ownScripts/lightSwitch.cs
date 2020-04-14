@@ -6,13 +6,15 @@ namespace Valve.VR.InteractionSystem
     {
         private bool isLightOn = false;
         private GameObject lever;
-        private Light lightBack;
+        private GameObject[] lights;
+        private Light sun;
 
         //-------------------------------------------------
         void Awake()
         {
             lever = transform.Find("lightlever").gameObject;
-            lightBack = GameObject.Find("classroom-scaler/classroom/roof/LampBack").GetComponent<Light>();
+            lights = GameObject.FindGameObjectsWithTag("lightbulb");
+            sun = GameObject.Find("Sun").GetComponent<Light>();
         }
 
 
@@ -30,11 +32,21 @@ namespace Valve.VR.InteractionSystem
             lever.transform.Rotate(0,0,90);
             if (!isLightOn)
             {
-                lightBack.intensity = 2;
+                foreach (GameObject light in lights)
+                {
+                    Material mat = light.GetComponent<Renderer>().material;
+                    mat.SetColor("_EmissionColor", Color.white);
+                    sun.intensity = 1.0f;
+                }
             }
             else
             {
-                lightBack.intensity = 0.1f;
+                foreach (GameObject light in lights)
+                {
+                    Material mat = light.GetComponent<Renderer>().material;
+                    mat.SetColor("_EmissionColor", Color.black);
+                    sun.intensity = 0.5f;
+                }
             }
         }
     }
