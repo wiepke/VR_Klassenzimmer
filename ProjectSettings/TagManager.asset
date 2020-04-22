@@ -10,6 +10,7 @@ TagManager:
   - Student
   - BlackBoard
   - lightbulb
+  - Poster
   layers:
   - Default
   - TransparentFX

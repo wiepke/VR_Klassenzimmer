@@ -16,12 +16,13 @@ public class CoreNet : MonoBehaviour {
     String[] studentPlacesToAnimate;
     String stoerung;
     DistortionTrigger trigger;
+    ConfigureStudent cs;
     Thread th;
     Socket client;
 
     // Use this for initialization
     void Start () {
-        
+        cs = GameObject.Find("Students").GetComponent<ConfigureStudent>();
         trigger = gameObject.AddComponent<DistortionTrigger>();
          if (MenuDataHolder.ChosenScene == 0)
         {
@@ -29,11 +30,11 @@ public class CoreNet : MonoBehaviour {
         }
         if (MenuDataHolder.ChosenScene == 1)
         {
-            Application.OpenURL("file:///D:/Unity/Klassenzimmer/website-control/controlLectureScene.html");
+            Application.OpenURL("file:///" + Application.streamingAssetsPath + "/website-control/controlLectureScene.html");
         }
         else if (MenuDataHolder.ChosenScene == 2)
         {
-            Application.OpenURL("file:///D:/Unity/Klassenzimmer/website-control/controlGroupWorkScene.html");
+            Application.OpenURL("file:///" + Application.streamingAssetsPath + "/website-control/controlGroupWorkScene.html");
         }
         atmosphere = GameObject.Find("atmosphere");
         
@@ -113,19 +114,22 @@ public class CoreNet : MonoBehaviour {
         
         if (distortionRequested)
         {
+            GameObject student = null;
             distortionRequested = false;
             if (studentPlacesToAnimate[0] == "all") {
                 GameObject allStudents = GameObject.Find("classroom-scaler/Students/");
                 for (int i=0; i<allStudents.gameObject.transform.childCount;i++)
                 {
                     string place = allStudents.gameObject.transform.GetChild(i).name;
-                    trigger.SetDisturbance(place, stoerung);
+                    student = cs.getStudent(place);
+                    trigger.SetDisturbance(student, place, stoerung);
                 }
             }
             else
             {
-                foreach(string placeToAnimate in studentPlacesToAnimate){
-                    trigger.SetDisturbance(placeToAnimate, stoerung);
+                foreach(string place in studentPlacesToAnimate){
+                    student = cs.getStudent(place);
+                    trigger.SetDisturbance(student, place, stoerung);
                 }
             }  
         }

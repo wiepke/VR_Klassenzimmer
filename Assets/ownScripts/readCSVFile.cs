@@ -8,10 +8,12 @@ public class readCSVFile : MonoBehaviour {
     List<csvTitles> disturbances = new List<csvTitles>();
     int distCounter = 0;
     DistortionTrigger trigger;
+    ConfigureStudent cs;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start ()
     {
+        cs = GameObject.Find("Students").GetComponent<ConfigureStudent>();
         trigger = gameObject.AddComponent<DistortionTrigger>();
         TextAsset automatedDistortions;
         if (MenuDataHolder.isExperiment)
@@ -137,7 +139,8 @@ public class readCSVFile : MonoBehaviour {
     {
         string stoerung = disturbances[distCounter].distortion;
         string studentPlace = disturbances[distCounter].studentPlace;
-        trigger.SetDisturbance(studentPlace, stoerung);
+        GameObject student = cs.getStudent(studentPlace);
+        trigger.SetDisturbance(student, studentPlace, stoerung);
         distCounter++;
     }
 

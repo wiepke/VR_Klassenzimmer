@@ -21,8 +21,14 @@ public class playSound : MonoBehaviour
     private AudioSource source;
     private AudioSource phone;
 
+    ConfigureStudent cs;
+    DistortionTrigger trigger;
+
     void Start()
     {
+        cs = GameObject.Find("Students").GetComponent<ConfigureStudent>();
+        trigger = gameObject.AddComponent<DistortionTrigger>();
+
         maleMaleDistortion.Add(Resources.Load<AudioClip>("soundFiles/Aufnahme #11"));
         maleMaleDistortion.Add(Resources.Load<AudioClip>("soundFiles/Aufnahme #12"));
         maleMaleDistortion.Add(Resources.Load<AudioClip>("soundFiles/Aufnahme #13"));
@@ -112,25 +118,20 @@ public class playSound : MonoBehaviour
                 place = place.Replace("L", "R");
                 partnerSits = "R";
             }
-            DateTime localDate = DateTime.Now;
             GameObject partnerStudent = GameObject.Find("classroom-scaler/Students/" + place).transform.GetChild(0).gameObject;
-            StudentAttributes attributes = ConfigureStudent.studentAttributes[partnerStudent];
-            attributes.isDistorting = true;
-            attributes.TimeDelayToLastMisbehaviour = localDate.Minute * 60 + localDate.Second;
-            attributes.ChanceToMisbehave = 0f;
-            ConfigureStudent.studentAttributes[partnerStudent] = attributes;
+            
             String partnerGender = "male";
             animator = partnerStudent.GetComponent<Animator>();
             
             foreach (Transform partner in partnerStudent.transform)
             {
-                if (partner.name.Contains("M3DFemale"))
+                if (partner.name.Contains("Fem"))
                 {
                     partnerGender = "female";
                     break;
                 }
             }
-            animator.SetTrigger("chatting" + partnerSits + "WV");
+            trigger.SetDisturbance(partnerStudent, place, "chatting" + partnerSits + "WV");
             if (myGender.Equals("female"))
             {
                 if (partnerGender.Equals("female"))

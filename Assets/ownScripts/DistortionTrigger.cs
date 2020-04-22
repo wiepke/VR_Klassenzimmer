@@ -10,37 +10,38 @@ public class DistortionTrigger : MonoBehaviour
     private GameObject student;
     private Animator disturb;
 
-    public void SetDisturbance(string studentPlace, string stoerung)
+    public void SetDisturbance(GameObject student, string studentPlace, string stoerung)
     {
         if (chattingStudent == null)
         {
             chattingStudent = GameObject.Find("Sun");
-        }
-        student = GameObject.Find("classroom-scaler/Students/" + studentPlace);
-        
+        }       
         sitsLeft = studentPlace.Contains("L");
-        try
-        {
-            student = student.transform.GetChild(0).gameObject;
-        }
-        catch (System.Exception)
-        {
-            Debug.Log("student "+studentPlace+" not found");
-            return;
-        }
         
-        ConfigureStudent.studentAttributes[student].ChanceToMisbehave = 0f;
-        ConfigureStudent.studentAttributes[student].TimeDelayToLastMisbehaviour = DateTime.Now.Minute * 60 + DateTime.Now.Second;
-        if (stoerung == "breathing" || stoerung == "writing")
+        if (stoerung == "breathing" || 
+            stoerung == "writing" || 
+            stoerung == "posterSow1")
         {
             ConfigureStudent.studentAttributes[student].LastGoodBehaviour = stoerung;
             ConfigureStudent.studentAttributes[student].isDistorting = false;
         }
         else
         {
-            ConfigureStudent.studentAttributes[student].isDistorting = true;
-            MenuDataHolder.MisbehaviourCount = MenuDataHolder.MisbehaviourCount + 1;
+            if (ConfigureStudent.studentAttributes[student].LastDistortion == stoerung)
+            {
+                return;     //if behaviour is just retriggert, nothing changes
+            }
+            else
+            {
+                ConfigureStudent.studentAttributes[student].LastDistortion = stoerung;
+                ConfigureStudent.studentAttributes[student].isDistorting = true;
+                MenuDataHolder.MisbehaviourCount = MenuDataHolder.MisbehaviourCount + 1;
+            }
+            
         }
+        ConfigureStudent.studentAttributes[student].ChanceToMisbehave = 0f;
+        ConfigureStudent.studentAttributes[student].TimeDelayToLastMisbehaviour = DateTime.Now.Minute * 60 + DateTime.Now.Second;
+
         disturb = student.GetComponent<Animator>();
         if (stoerung.Equals("chatting"))
         {

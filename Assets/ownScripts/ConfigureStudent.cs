@@ -71,14 +71,6 @@ public class ConfigureStudent : MonoBehaviour
         automateStudents();
     }
 
-    private void letStudentsBreath()
-    {
-        foreach (GameObject student in allStudents)
-        {
-
-        }
-    }
-
     private void automateStudents()
     {
         foreach (GameObject student in allStudents)
@@ -160,6 +152,19 @@ public class ConfigureStudent : MonoBehaviour
                 student.SetActive(false);
             }
             n--;
+        }
+    }
+
+    public GameObject getStudent(string studentPlace)
+    {
+        try
+        {
+            return GameObject.Find("classroom-scaler/Students/" + studentPlace).transform.GetChild(0).gameObject;
+        }
+        catch (System.Exception)
+        {
+            Debug.Log("student " + studentPlace + " not found");
+            return null;
         }
     }
 }
