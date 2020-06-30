@@ -8,18 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using WebSocketSharp.Server;
 
-public class NetworkController : MonoBehaviour {
-    public AmbientSound AmbientController;
+public class NetworkHandler : MonoBehaviour {
     private ClassController classController;
-
-    private TcpListener Server { get; set; }
-
-    private bool distortionRequested = false;
-    private bool atmosphereChange = false;
-
-    private String[] studentPlacesToAnimate;
-    private String stoerung;
-    
     private SocketEventHandler handler;
     
     // Use this for initialization
@@ -38,7 +28,7 @@ public class NetworkController : MonoBehaviour {
         );
         handler.Events.RegisterCallback(
             "ambientChange",
-            json => AmbientController.SoundLevel(JsonUtility.FromJson<AmbientChange>(json))
+            json => { Debug.Log("TODO"); } // AmbientSound.SoundLevel(JsonUtility.FromJson<AmbientChange>(json))
         );
     }
 }
