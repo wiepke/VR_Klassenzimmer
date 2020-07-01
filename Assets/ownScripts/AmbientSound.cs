@@ -19,7 +19,7 @@ public class AmbientSound : MonoBehaviour {
     public void SoundLevel(AmbientChange ac)
     {
         if (ac.level < 0 || ac.level > NoiseLevels.Length)
-            throw new ArgumentOutOfRangeException("A audio leven between 0 and " + NoiseLevels.Length + " is expected");
+            throw new ArgumentOutOfRangeException("A audio level between 0 and " + NoiseLevels.Length + " is expected");
 
         string currClip = source.clip.name;
         CurrentNoiseLevel = ac.level;

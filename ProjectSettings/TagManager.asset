@@ -11,6 +11,7 @@ TagManager:
   - BlackBoard
   - lightbulb
   - Poster
+  - Desk
   layers:
   - Default
   - TransparentFX

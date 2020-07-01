@@ -9,24 +9,14 @@ using System.IO;
 public class RandomizedStudents : StudentPlacer
 {
     /// <summary>
-    /// Path to folder with male student models.
-    /// </summary>
-    public string MaleModelsPath = "Students/Male";
-
-    /// <summary>
     /// Array of model prefabs to use for male students.
     /// </summary>
-    private GameObject[] MaleModels;
-
-    /// <summary>
-    /// Path to folder with male student models.
-    /// </summary>
-    public string FemaleModelsPath = "Students/Female";
+    public GameObject[] MaleModels;
 
     /// <summary>
     /// Array of model prefabs to use for female students.
     /// </summary>
-    private GameObject[] FemaleModels;
+    public GameObject[] FemaleModels;
 
     public string MaleNamesPath = "maleNames.txt";
     
@@ -86,8 +76,6 @@ public class RandomizedStudents : StudentPlacer
 
     public override void EditorUpdateHook()
     {
-        FemaleModels = Resources.LoadAll<GameObject>(FemaleModelsPath);
-        MaleModels = Resources.LoadAll<GameObject>(MaleModelsPath);
         FemaleNames = ReadLines(FemaleNamesPath);
         MaleNames = ReadLines(MaleNamesPath);
     }
