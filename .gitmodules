@@ -1,0 +1,3 @@
+[submodule "unity-xr-plugin"]
+	path = unity-xr-plugin
+	url = https://github.com/ValveSoftware/unity-xr-plugin.git

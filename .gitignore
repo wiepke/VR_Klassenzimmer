@@ -12,7 +12,12 @@
 *.apk
 *.unitypackage
 /Logs/*
- 
+/Klassenzimmer_Data/
+*.exe
+/UnityCrashHandler64 
+Player.dll
+/MonoBleedingEdge/
+
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
 # ===================================== #
@@ -55,3 +60,9 @@ Corridor/Library/metadata/
 # ========================= #
 /Assets/MORPH3D*
 /Assets/Student_Movement/*
+
+# ================= #
+# Node.js generated #
+# ================= #
+/Assets/StreamingAssets/dist
+/Assets/StreamingAssets/dist.meta

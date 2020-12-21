@@ -5,13 +5,26 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/mainMenu.unity
     guid: d7029d87ad43a664c8eea9cd27b22b82
+  - enabled: 1
+    path: Assets/Scenes/EntranceHall.unity
+    guid: 678cf9828d0946846a9ac311baf02281
   - enabled: 1
     path: Assets/Scenes/frontalLectureScene.unity
     guid: fc0a07cc643e23946aa2e638e2e751e9
   - enabled: 1
-    path: Assets/Scenes/groupWorkScene.unity
+    path: Assets/Scenes/fishBoneScene.unity
     guid: 9f50a3b3f10766d4ab8c0da51f5e63d6
-  m_configObjects: {}
+  m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 5f88453d75fa28f42b6f4c879fa6281e,
+      type: 2}
+    Unity.XR.OpenVR.Settings: {fileID: 11400000, guid: a358a6571d247a14c9f882e71415c9ee,
+      type: 2}
+    Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: b1433a51bc3e2a2408924cda82623bd1,
+      type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: c8f7c4c22ef31e44b801d5425f32a0a6,
+      type: 2}
+    xr.sdk.mock-hmd.settings: {fileID: 11400000, guid: 9feef87a912129a4188ca65f8b1ac282,
+      type: 2}

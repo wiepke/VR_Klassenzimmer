@@ -11,6 +11,8 @@ TagManager:
   - BlackBoard
   - lightbulb
   - Poster
+  - Desk
+  - StudentSlot
   layers:
   - Default
   - TransparentFX
@@ -20,9 +22,9 @@ TagManager:
   - UI
   - 
   - 
-  - ignoreTeleport
-  - 
-  - 
+  - Teleport
+  - Interactable
+  - Drawable
   - 
   - 
   - 

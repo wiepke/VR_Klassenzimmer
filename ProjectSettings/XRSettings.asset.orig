@@ -1,0 +1,16 @@
+{
+    "m_SettingKeys": [
+        "VR Device Disabled",
+        "VR Device User Alert",
+        "VR Device Transitioned Groups"
+    ],
+    "m_SettingValues": [
+        "True",
+        "True",
+<<<<<<< HEAD
+        ",Standalone"
+=======
+        "Standalone"
+>>>>>>> 65ff2dc81f708a406b74509738ad8901f3057325
+    ]
+}
