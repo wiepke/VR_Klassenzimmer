@@ -23,11 +23,8 @@ public class Drawable : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         var du = collision.gameObject.GetComponent<DrawingUtensil>();
-        if (du != null)
-        {
-            du.LastPos = CalcPosition(collision.contacts[0].point);
-            utensils.Add(collision.gameObject, du);
-        }
+        du.LastPos = CalcPosition(collision.contacts[0].point);
+        utensils.Add(collision.gameObject, du);
     }
 
     private void OnCollisionStay(Collision collision)

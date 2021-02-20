@@ -1,45 +1,46 @@
-﻿using UnityEngine;
-
-// a SteamVR solution for Laserpointers
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using Valve.VR.Extras;
+using Valve.VR;
 public class LaserPointerScript : MonoBehaviour
 {
-    /*
-    public SteamVR_LaserPointer laserPointer;
+    [SerializeField]
+    private SteamVR_LaserPointer laserPointer;
+
+    [SerializeField]
+    private GameObject laserPointerGameObject;
 
     public void Awake()
     {
-        if (laserPointer != null)
-        {
-            laserPointer.PointerIn += PointerInside;
-            laserPointer.PointerOut += PointerOutside;
-            laserPointer.PointerClick += PointerClick;
-        }
-        else
-        {
-            Debug.LogWarning("You forgot to initialize the laserPointer");
-        }
-        
+        laserPointer.PointerIn += PointerInside;
+        laserPointer.PointerOut += PointerOutside;
+        laserPointer.PointerClick += PointerClick;
     }
 
     public void PointerClick(object sender, PointerEventArgs e)
     {
-        if (e.target.CompareTag("StudentSlot"))
+        if (e.target.CompareTag("LaserCollider"))
         {
-            BehaviourController bc = e.target.gameObject.GetComponent<BehaviourController>();
-            if (bc.CurrentBehaviour == "RaiseArm")
+            var bc = e.target.gameObject.GetComponentInParent<BehaviourController>();
+            if (bc.CurrentBehaviour.Equals("RaiseArm"))
             {
-                bc.HandleBehaviour("AskQuestion");
+                bc.Disrupt("AskQuestion");
+                laserPointerGameObject.SetActive(false);
             }
-            else
+            else if (bc.IsDistorting)
             {
-                bc.TriggerLastGoodBehaviour();
+                MenuDataHolder.MisbehaviourSeen++;
+                laserPointerGameObject.SetActive(false);
             }
         }
     }
 
     public void PointerInside(object sender, PointerEventArgs e)
     {
-        if (e.target.CompareTag("StudentSlot"))
+        if (e.target.CompareTag("LaserCollider"))
         {
             laserPointer.color = Color.red;
         }
@@ -47,9 +48,9 @@ public class LaserPointerScript : MonoBehaviour
 
     public void PointerOutside(object sender, PointerEventArgs e)
     {
-        if (e.target.CompareTag("StudentSlot"))
+        if (e.target.CompareTag("LaserCollider"))
         {
             laserPointer.color = Color.black;
         }
-    }*/
+    }
 }

@@ -3,7 +3,6 @@ import { goodBehaviours, badBehaviours, impulseArray, themeArray } from '../../c
 import BehaviourButton from './BehaviourButton'
 import ImpulseButton from './ImpulseButton'
 import ThemeButton from './ThemeButton'
-//import KeyBinding from './keyBinding'
 
 const BehaviourControls = () => {
   return (
@@ -36,9 +35,7 @@ const BehaviourControls = () => {
             <ThemeButton key={b} theme={b} />)}
         </div>
       </div>
-	  
     </div>
-	
   )
 }
 

@@ -1,2 +1,2 @@
-id,timeInS,studentPlace,distortion,
-1,1,02R,Idle,
+id	timeInS	studentPlace	distortion
+1	5	02R	playing

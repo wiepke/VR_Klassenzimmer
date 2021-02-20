@@ -5,7 +5,7 @@ using UnityEngine;
 public class Evaluation : MonoBehaviour
 {
     [SerializeField]
-    private GameObject evaluationObj = default;
+    private GameObject evaluationObj;
 
     [SerializeField]
     private float roomScaleMinX = -3.28f;
@@ -34,14 +34,14 @@ public class Evaluation : MonoBehaviour
         texture = new Texture2D(256, 256);
         evaluationObj.GetComponent<Renderer>().material.mainTexture = texture;
         //Test
-        if (MenuDataHolder.evaluationMap.Count < 10)
+        if (MenuDataHolder.EvaluationMap.Count < 10)
         {
             for (int i = 0; i < 400; i++)
             {
                 
                  float testX = Random.Range(0, 255);
                  float testY = Random.Range(0, 255);
-                 MenuDataHolder.evaluationMap.Add(new Vector2(testX, testY));
+                 MenuDataHolder.EvaluationMap.Add(new Vector2(testX, testY));
             }
         }
         /////////
@@ -61,14 +61,14 @@ public class Evaluation : MonoBehaviour
         {
             if (pixCount > shmls)
             {
-                Vector2 roomPositionOld = MenuDataHolder.evaluationMap[(pixCount - shmls) % MenuDataHolder.evaluationMap.Count];
+                Vector2 roomPositionOld = MenuDataHolder.EvaluationMap[(pixCount - shmls) % MenuDataHolder.EvaluationMap.Count];
                 float pixelXOld = (roomPositionOld.x - roomScaleMinX) / (roomScaleMaxX - roomScaleMinX) * texture.width;
                 float pixelYOld = (roomPositionOld.y - roomScaleMinZ) / (roomScaleMaxZ - roomScaleMinZ) * texture.height;
                 texture.SetPixel(Mathf.RoundToInt(pixelXOld), Mathf.RoundToInt(pixelYOld), Color.clear);
                 enlargePixel(new Vector2(pixelXOld, pixelYOld), Color.clear);
             }
             nextActionTime += period;
-            Vector2 roomPosition = MenuDataHolder.evaluationMap[pixCount % MenuDataHolder.evaluationMap.Count];
+            Vector2 roomPosition = MenuDataHolder.EvaluationMap[pixCount % MenuDataHolder.EvaluationMap.Count];
             float pixelX = (roomPosition.x - roomScaleMinX) / (roomScaleMaxX - roomScaleMinX) * texture.width;
             float pixelY = (roomPosition.y - roomScaleMinZ) / (roomScaleMaxZ - roomScaleMinZ) * texture.height;
             texture.SetPixel(Mathf.RoundToInt(pixelX), Mathf.RoundToInt(pixelY), Color.red);

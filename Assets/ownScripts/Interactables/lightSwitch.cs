@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 namespace Valve.VR.InteractionSystem
 {
-    public class lightSwitch : MonoBehaviour
+    [RequireComponent(typeof(Interactable))]
+    public class LightSwitch : MonoBehaviour
     {
         private bool isLightOn = false;
         private GameObject lever;
@@ -16,24 +17,33 @@ namespace Valve.VR.InteractionSystem
             sun = GameObject.Find("Sun").GetComponent<Light>();
         }
 
-        public void toggleLight()
+
+        //-------------------------------------------------
+        // Called when a Hand starts hovering over this object
+        //-------------------------------------------------
+        private void OnHandHoverBegin(Hand hand)
+        {
+            ToggleLight();
+        }
+
+        private void ToggleLight()
         {
             isLightOn = !isLightOn;
             lever.transform.Rotate(0,0,90);
             if (!isLightOn)
             {
-                foreach (GameObject light in lights)
+                foreach (var light in lights)
                 {
-                    Material mat = light.GetComponent<Renderer>().material;
+                    var mat = light.GetComponent<Renderer>().material;
                     mat.SetColor("_EmissionColor", Color.white);
                     sun.intensity = 1.0f;
                 }
             }
             else
             {
-                foreach (GameObject light in lights)
+                foreach (var light in lights)
                 {
-                    Material mat = light.GetComponent<Renderer>().material;
+                    var mat = light.GetComponent<Renderer>().material;
                     mat.SetColor("_EmissionColor", Color.black);
                     sun.intensity = 0.5f;
                 }

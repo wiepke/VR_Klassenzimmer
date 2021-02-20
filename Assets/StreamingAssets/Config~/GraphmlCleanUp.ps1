@@ -1,5 +1,6 @@
+Get-Childitem -Directory | Select-Object Name | foreach {cd $_.Name; 
 $fixedText = ''
-$fixedText = Get-Content -path achterMai/Strukturmodell.graphml -Raw
+$fixedText = Get-Content -path Strukturmodell.graphml -Raw
 $fixedText = $fixedText -replace '<y:', '<'
 $fixedText = $fixedText -replace '</y:', '</'
 $fixedText = $fixedText -replace '\s*</?(ImageNode|PreferredPlacementDescriptor|SmartEdgeLabelModelParameter|SmartEdgeLabelModel|EdgeLabel|Point|Resources|key|graphml|Shape|BorderStyle|data|Geometry|SmartNodeLabelModel|ModelParameter|PolyLineEdge|Path|Arrows|BendStyle|LabelModel|SmartNodeLabelModel)[^>]*>', ''
@@ -37,4 +38,6 @@ $fixedText = $fixedText -replace 'z\r', 'z '
 $fixedText = $fixedText -replace '</graph>[\w|\W|\r|\n]*', '</graph>'
 $fixedText = $fixedText -replace '<node id="[^<]*<Fill[^<]*<NodeLabel[^<]*<Image[^<]*</node>', ''
 $fixedText = $fixedText -replace '(\s+)$', ''
-$fixedText | Set-Content -Path achterMai/Strukturmodell_Cleaned.txt
+$fixedText | Set-Content -Path Strukturmodell_Cleaned.txt
+cd ..
+}

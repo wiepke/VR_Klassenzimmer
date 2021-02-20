@@ -4101,18 +4101,11 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.33333334
+  - time: 0.16666667
     functionName: attachPrimary
     data: 
     objectReferenceParameter: {fileID: 5162382139810862865, guid: eb193fc9207e08d4287b1ecaffe578ac,
       type: 3}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 17.6
-    functionName: detach
-    data: 
-    objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

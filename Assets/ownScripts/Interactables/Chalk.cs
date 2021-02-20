@@ -6,12 +6,12 @@ public class Chalk : MonoBehaviour
 {
     private bool drawEnabled = false;
     [SerializeField]
-    GameObject ChalkObj = default;
+    private GameObject ChalkObj;
 
     [SerializeField]
-    GameObject ChalkLine = default;
+    private GameObject ChalkLine;
 
-    Vector3 lastLine;
+    private Vector3 lastLine;
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -32,11 +32,11 @@ public class Chalk : MonoBehaviour
         }
     }
 
-    void Update()
+    private void OnCollisionStay(Collision collision)
     {
-        if (drawEnabled)
+        if (collision.gameObject == ChalkObj && drawEnabled)
         {
-            if (Vector3.Distance(lastLine, transform.position) > 0.2f)
+            if (Vector3.Distance(lastLine, transform.position) > 0.5f)
             {
                 GameObject trail = Instantiate(ChalkLine);
                 trail.transform.parent = transform;

@@ -16,4 +16,4 @@ MonoBehaviour:
   IsMale: 1
   IsTall: 1
   ModelName: Male3
-  IsLeftHanded: 0
+  IsLeftHanded: 1

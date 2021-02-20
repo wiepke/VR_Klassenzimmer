@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SocketEventHandler : MonoBehaviour
 {
@@ -24,11 +23,11 @@ public class SocketEventHandler : MonoBehaviour
         try
         {
             socket.Emit(new RequestJson(type, response));
-        }catch(Exception)
-        {
-            Debug.LogWarning("Not connected to Frontend yet");
         }
-        
+        catch (System.InvalidOperationException e)
+        {
+            // Ignore exception on unconnected
+        }
     }
 
     private void Update()

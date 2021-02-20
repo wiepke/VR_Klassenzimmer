@@ -15,12 +15,14 @@ public class AmbientSound : MonoBehaviour {
 
         if (MenuDataHolder.isExperiment)
         {
+            /*
             if (MenuDataHolder.NumberOfExperiment == 2)
                 source.PlayOneShot(SoundLoader.Instance.ExperimentAmbient[2], 1f);
             else if (MenuDataHolder.isPresentation)
                 source.PlayOneShot(SoundLoader.Instance.ExperimentAmbient[0], 1f);
             else
                 source.PlayOneShot(SoundLoader.Instance.ExperimentAmbient[1], 1f);
+            */
         }
         else
         {
@@ -31,26 +33,16 @@ public class AmbientSound : MonoBehaviour {
 
     public void SoundLevel(AmbientChange ac)
     {
-        SoundLevel(ac.level);
-    }
-
-    public void SoundLevel(int soundLevel)
-    {
-        if (soundLevel < 0 || soundLevel > NoiseLevels.Length)
+        if (ac.level < 0 || ac.level > NoiseLevels.Length)
             throw new ArgumentOutOfRangeException("A audio level between 0 and " + NoiseLevels.Length + " is expected");
 
         string currClip = source.clip.name;
-        CurrentNoiseLevel = soundLevel;
+        CurrentNoiseLevel = ac.level;
         source.volume = NoiseLevels[CurrentNoiseLevel];
         source.clip = ClassAmbient(CurrentNoiseLevel);
 
         // Only play a clip from the start if it was actually changed (avoid obvious cutoff/looping)
         if (source.clip.name != currClip) source.Play();
-    }
-
-    public void PlayDefaultAmbient()
-    {
-        SoundLevel(0);
     }
 
     public AudioClip ClassAmbient(int level)

@@ -3,6 +3,7 @@ import { Dashboard, Scenario } from './pages/'
 import './sidebar.css'
 import { Link, Switch, Route, HashRouter as Router } from 'react-router-dom'
 import Hotkeys from './Hotkeys'
+import Replay from './pages/Replay'
 
 const NavBar = () => (
   <nav className='navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow'>
@@ -37,6 +38,7 @@ const SidebarMenu = () => (
       <ul className='nav flex-column'>
         <NavLink to="/">Classroom Controls</NavLink>
         <NavLink to="/scenario">Scenario</NavLink>
+        <NavLink to="/Replay">Replay Controls</NavLink>
       </ul>
     </div>
   </nav>
@@ -56,6 +58,7 @@ const Main = () => (
           <Switch>
             <Route path="/" exact><Dashboard /></Route>
             <Route path="/scenario" exact><Scenario /></Route>
+            <Route path="/Replay" exact><Replay /></Route>
           </Switch>
         </main>
       </div>

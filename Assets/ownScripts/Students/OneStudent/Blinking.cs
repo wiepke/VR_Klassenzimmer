@@ -8,11 +8,11 @@ public class Blinking : MonoBehaviour
     private SkinnedMeshRenderer bodyMesh;
     private SkinnedMeshRenderer eyeMesh = null;
 
-    private float minBlinkDelay = 5f;
-    private float maxBlinkDelay = 15f;
+    private readonly float minBlinkDelay = 5f;
+    private readonly float maxBlinkDelay = 15f;
 
     private float blink = 0f;
-    private float blinkSpeed = 7f; // a single blink takes 1f / blinkSpeed seconds
+    private readonly float blinkSpeed = 7f; // a single blink takes 1f / blinkSpeed seconds
 
     private float blinkDir = 1f;
 

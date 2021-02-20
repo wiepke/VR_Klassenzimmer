@@ -5,10 +5,9 @@ using UnityEngine;
 
 public class SetupClass : MonoBehaviour
 {
-    public Transform Teacher;
     void Start()
     {
-        AllStudentAttributes.Teacher = Teacher;
+        AllStudentAttributes.Teacher = GameObject.Find("HeadCollider").transform;
         AllStudentAttributes.SetupStudentValues();
         ConfigLoader.SetupPosters();
         ConfigLoader.SetupLessonDraft();

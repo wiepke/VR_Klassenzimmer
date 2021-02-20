@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class playSound : MonoBehaviour
+public class PlaySound : MonoBehaviour
 {
     private AudioSource source;
+    private AudioSource phone;
     private float volumeFloat = 0.7f;
 
     private StudentController sc;
@@ -117,14 +118,14 @@ public class playSound : MonoBehaviour
     {
         source.enabled = true;
         source.pitch = 0.5f;
-        source.PlayOneShot(Clips.JustBite, volumeFloat - 0.4f);
+        source.PlayOneShot(Clips.JustBite, volumeFloat - 0.8f);
     }
 
     private void sodaCanSound()
     {
         source.enabled = true;
         source.pitch = 0.5f;
-        source.PlayOneShot(Clips.OpenSodaCan, volumeFloat - 0.4f);
+        source.PlayOneShot(Clips.OpenSodaCan, volumeFloat - 0.8f);
     }
 
     private void punchSound()
@@ -140,5 +141,19 @@ public class playSound : MonoBehaviour
         {
             source.enabled = false;
         }
+    }
+
+    // TODO: Unused?
+    private void PhoneAudioPlay()   //starts the audio-file attached to the objects "audio-source"
+    {                               //will just be used in animation-events
+                                    //be carefull to attach the correct audiofile to the person.
+
+        phone.enabled = true;
+        phone.loop = true;
+    }
+    private void PhoneAudioStop()        //will be stopped in the end of the animation "chatting"
+    {                               //will just be used in animation-events
+        phone.enabled = false;
+        phone.loop = false;
     }
 }

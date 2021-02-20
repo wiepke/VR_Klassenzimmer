@@ -1185,8 +1185,8 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.13333334
-        value: -0.097597785
+        time: 0
+        value: -0.08699942
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1194,8 +1194,8 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 9.183333
-        value: -0.097597785
+        time: 9.05
+        value: -0.08699942
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1410,7 +1410,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -0.09464225
+        value: 0.29219818
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1418,8 +1418,8 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 9.016666
-        value: -0.09464225
+        time: 9.15
+        value: 0.29219818
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -3324,8 +3324,8 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.13333334
-        value: -0.097597785
+        time: 0
+        value: -0.08699942
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -3333,8 +3333,8 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 9.183333
-        value: -0.097597785
+        time: 9.05
+        value: -0.08699942
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -3549,7 +3549,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -0.09464225
+        value: 0.29219818
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -3557,8 +3557,8 @@ AnimationClip:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 9.016666
-        value: -0.09464225
+        time: 9.15
+        value: 0.29219818
         inSlope: 0
         outSlope: 0
         tangentMode: 136

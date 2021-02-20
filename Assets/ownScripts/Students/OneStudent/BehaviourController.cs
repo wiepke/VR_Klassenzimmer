@@ -9,6 +9,7 @@ public class BehaviourController : MonoBehaviour
 {
     private const float CrossFadeTime = 0.25f;
 
+    public string CurrentBehaviour = "Idle";
     public string LastGoodBehaviour = "Idle";
     public string LastDistortion;
     public float TimeDelayToLastMisbehaviour = 0f;
@@ -16,17 +17,12 @@ public class BehaviourController : MonoBehaviour
 
     public Transform ConversationPartner;
 
-
-    [HideInInspector] public StudentController sc;
-
     [HideInInspector] MixamoAttachment attachment;
-    [HideInInspector] playSound playSoundScript;
-    private Animator animator;
-    [HideInInspector]
-    public IKControl ik;
-    public float nameSeededRandomValue;
+    [HideInInspector] PlaySound playSoundScript;
 
-    public string CurrentBehaviour;
+    private StudentController sc;
+    private Animator animator;
+    private IKControl ik;
 
     public bool IsDistorting { get; private set; }
 
@@ -34,14 +30,13 @@ public class BehaviourController : MonoBehaviour
     {
         this.sc = sc;
 
-        playSoundScript = sc.Model.GetComponent<playSound>();
+        playSoundScript = sc.Model.GetComponent<PlaySound>();
         attachment = sc.Model.GetComponent<MixamoAttachment>();
 
         animator = sc.Model.GetComponent<Animator>();
         animator.SetBool("isTall", sc.StudentObj.IsTall);
         animator.SetBool("isLeftHanded", sc.StudentObj.IsLeftHanded);
-        nameSeededRandomValue = (float) sc.StudentObj.Name.GetHashCode() / (float)int.MaxValue;
-        animator.SetFloat("CycleOffset", nameSeededRandomValue);
+        animator.SetFloat("CycleOffset", Random.value);
 
         ik = sc.Model.GetComponent<IKControl>();
 
@@ -60,15 +55,11 @@ public class BehaviourController : MonoBehaviour
     }
 
     // Moves animator into specific state without using a trigger (apparently does not trigger StateMachineBehaviour.OnExitState)
-    private void Transition(string State, int Layer = 0, GameObject objectToAttach = null)
+    private void Transition(string state, int Layer = 0)
     {
         playSoundScript.stopVoice();
         attachment.detach();
-        if (objectToAttach != null)
-        {
-            attachment.attachPrimary(objectToAttach);
-        }
-        animator.CrossFadeInFixedTime(State, CrossFadeTime, Layer);
+        animator.CrossFadeInFixedTime(state, CrossFadeTime, Layer);
     }
 
     /// <summary>
@@ -88,7 +79,7 @@ public class BehaviourController : MonoBehaviour
         MenuDataHolder.MisbehaviourSolved++;
         IsDistorting = false;
         TimeDelayToLastMisbehaviour = 0f; // DateTime.Now.Minute * 60 + DateTime.Now.Second; // TODO Where/How is this actually used?
-        HandleBehaviourRequestForThisStudent(LastGoodBehaviour);
+        Behave();
     }
 
     private IEnumerator NonScriptedClassBehaviour()
@@ -110,38 +101,44 @@ public class BehaviourController : MonoBehaviour
             yield return new WaitForSeconds(10);
         }
     }
+    
+    public void Behave()
+    {
+        DisruptClass(LastGoodBehaviour, new Behave(sc.Id, LastGoodBehaviour));
+    }
 
     public static void Disrupt(GameObject student, string disruption)
     {
-        student.GetComponent<BehaviourController>().HandleBehaviour(disruption);
+        student.GetComponent<BehaviourController>().Disrupt(disruption);
     }
 
-    public void HandleBehaviourRequestForThisStudent(string disruption)
+    // TODO: Change the method head, why explicitly state response?
+    // TODO: Change name into more expressive one    
+    public void DisruptClass(string disruption, JsonData response)
     {
-        HandleBehaviour(disruption);
-        JsonData response = new Behave(sc.Id, disruption);
+        Disrupt(disruption);
         ClassController.Handler.Respond(disruption, response);
     }
 
     /// <summary>
     /// Lets student play out a given disruption.
     /// </summary>
-    /// <param name="behaviour">identifier of the respective disturbance</param>
+    /// <param name="disruption">identifier of the respective disturbance</param>
     /// <param name="origin">Set to false if a student should not echo it's partner actions</param>
-    public void HandleBehaviour(string behaviour, bool origin = true)
+    public void Disrupt(string disruption, bool origin = true)
     {
         // TODO: A lot of this is probably way better to do via animator states
-        BehaviourParameters behaviourParameters = SpecialBehaviours.GetBehaviour(behaviour);
-                 
+        Behaviour behaviour = SpecialBehaviours.GetBehaviour(disruption);
+
         // Set lowerBody layer weight
-        animator.SetLayerWeight(1, behaviourParameters.SupportLegs ? 1f : 0f);
+        animator.SetLayerWeight(1, behaviour.SupportLegs ? 1f : 0f);
         
-        ik.IkActive = behaviourParameters.IK;
-        
-        ik.MoveHand = behaviourParameters.Id == "Idle";
+        ik.IkActive = behaviour.IK;
+        ik.Follow = !IsDistorting && LastGoodBehaviour == "Impulse";
+        ik.MoveHand = behaviour.Id == "Idle";
 
         // Handle freshly triggered pair action
-        if (behaviourParameters.Pair && behaviour != CurrentBehaviour)
+        if (behaviour.Pair && disruption != CurrentBehaviour)
         {
             // Set up facing (e.g. for blend tree)
             FacePartner();
@@ -152,45 +149,35 @@ public class BehaviourController : MonoBehaviour
             if (origin)
             {
                 // Also disrupt neighbour/partner
-                ConversationPartner.GetComponent<BehaviourController>().HandleBehaviour(behaviour, false);
+                ConversationPartner.GetComponent<BehaviourController>().Disrupt(disruption, false);
             }
             else
             {
                 // Notify Frontend of change
-                NetworkController.Handler.Respond("behave", new Behave(sc.Id, behaviour));
+                NetworkController.Handler.Respond("behave", new Behave(sc.Id, disruption));
             }
 
-            if (behaviour == "PlakatPartner")
+            if (disruption == "PlakatPartner")
             {
                 foreach (GameObject poster in ConfigLoader.posters) poster.SetActive(true);
             }
         }
 
-        if (behaviourParameters.Good)
+        if (behaviour.Good)
         {
-            LastGoodBehaviour = behaviour;
+            LastGoodBehaviour = disruption;
             IsDistorting = false;
         }
         else
         {
-            MenuDataHolder.MisbehaviourCount++;
-            LastDistortion = behaviour;
+            LastDistortion = disruption;
             IsDistorting = true;
             TimeDelayToLastMisbehaviour = 0f;
             ChanceToMisbehave = 0f;
+            MenuDataHolder.MisbehaviourCount++;
         }
-
-        CurrentBehaviour = behaviour;
-        Transition(behaviour, 0);
-    }
-
-    public void PlayImpulse()
-    {
-        //look for animations to illustrate talking students and get a random animationclip
-        float randomImpulse = Random.value;
-        animator.SetFloat("randomImpulse", randomImpulse);
-        ik.Follow = !IsDistorting && LastGoodBehaviour == "Impulse";
-        HandleBehaviour("Impulse");
+        CurrentBehaviour = disruption;
+        Transition(disruption, 0);
     }
 }
 
@@ -213,7 +200,7 @@ public class BehaviourControllerDebug : Editor
 
             foreach (var state in SpecialBehaviours.BehaviourIDs)
             {
-                menu.AddItem(new GUIContent(state), false, () => bc.HandleBehaviour(state));
+                menu.AddItem(new GUIContent(state), false, () => bc.Disrupt(state));
             }
 
             menu.ShowAsContext();

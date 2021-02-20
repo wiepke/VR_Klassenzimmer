@@ -33,7 +33,7 @@ impulses.forEach(b => impulseColor[b] = IMPULSE)
 impulses.forEach(b => behaviourColors[b] = IMPULSE)
 
 export const THEME_SELECTION = 'primary'
-export const themes = ['Bismarck', 'Israel', 'achterMai']
+export const themes = ['Bismarck', 'Israel', 'Tag der Befreiung']
 themes.forEach(b => themeColor[b] = THEME_SELECTION)
 themes.forEach(b => behaviourColors[b] = THEME_SELECTION)
 

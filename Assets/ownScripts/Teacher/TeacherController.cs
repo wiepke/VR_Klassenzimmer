@@ -5,5 +5,5 @@ using UnityEngine;
 public class TeacherController : MonoBehaviour
 {
     [SerializeField]
-    public Transform LookAtTarget = default;
+    public Transform LookAtTarget;
 }

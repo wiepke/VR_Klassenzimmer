@@ -21,6 +21,8 @@ public class ControlMenu : MonoBehaviour
     public GameObject evalMisbSolved;
     public GameObject evalMisbSeen;
     public GameObject toggleNonScriptedBehaviour;
+    [SerializeField] private GameObject toggleTimer;
+    [SerializeField] private GameObject inputFieldTimer;
 
     private ExperimentParameters[] experiments;
 
@@ -34,7 +36,7 @@ public class ControlMenu : MonoBehaviour
             evaluationWalkingBackground.GetComponent<Renderer>().material.mainTexture = textures[MenuDataHolder.ChosenScene - 1];
         }
 
-        evalDistance.GetComponent<TextMeshProUGUI>().text = MenuDataHolder.walkedDistance.ToString();
+        evalDistance.GetComponent<TextMeshProUGUI>().text = MenuDataHolder.WalkedDistance.ToString();
         evalMisbCount.GetComponent<TextMeshProUGUI>().text = MenuDataHolder.MisbehaviourCount.ToString();
         evalMisbSolved.GetComponent<TextMeshProUGUI>().text = MenuDataHolder.MisbehaviourSolved.ToString();
         evalMisbSeen.GetComponent<TextMeshProUGUI>().text = MenuDataHolder.MisbehaviourSeen.ToString();
@@ -65,14 +67,17 @@ public class ControlMenu : MonoBehaviour
             new ExperimentParameters(0, 15, true, true, 2),
             new ExperimentParameters(0, 30, true, true, 2)
         };
+
+        //Set timer toggle
+        toggleTimer.GetComponent<Toggle>().isOn = MenuDataHolder.TimerActive;
     }
 
     private void LoadScene(int sceneIndex)
     {
         // Update Data Holder
         MenuDataHolder.ChosenScene = sceneIndex;
-        MenuDataHolder.repetitionCount++;
-        MenuDataHolder.walkedDistance = 0;
+        MenuDataHolder.RepetitionCount++;
+        MenuDataHolder.WalkedDistance = 0;
         MenuDataHolder.MisbehaviourCount = 0;
         MenuDataHolder.MisbehaviourSolved = 0;
         MenuDataHolder.MisbehaviourSeen = 0;
@@ -123,6 +128,19 @@ public class ControlMenu : MonoBehaviour
         MenuDataHolder.isNonScripted = toggleNonScriptedBehaviour.GetComponent<Toggle>().isOn;
     }
 
+    public void SetTimer()
+    {
+        MenuDataHolder.TimerActive = toggleTimer.GetComponent<Toggle>().isOn;
+    }
+
+    public void SetTimerSeconds()
+    {
+        int input;
+        if (int.TryParse(inputFieldTimer.GetComponent<TMP_InputField>().text, out input))
+        {
+            MenuDataHolder.TimerSeconds = input;
+        }
+    }
     // Reduce code repetition
     private void LoadExperiment(ExperimentParameters experiment)
     {

@@ -13,6 +13,7 @@ TagManager:
   - Poster
   - Desk
   - StudentSlot
+  - LaserCollider
   layers:
   - Default
   - TransparentFX
@@ -22,9 +23,9 @@ TagManager:
   - UI
   - 
   - 
-  - Teleport
-  - Interactable
+  - ignoreTeleport
   - Drawable
+  - Interactable
   - 
   - 
   - 

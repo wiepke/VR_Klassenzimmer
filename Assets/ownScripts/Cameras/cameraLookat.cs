@@ -4,7 +4,7 @@ using UnityEngine;
 public class cameraLookat : MonoBehaviour
 {
     [SerializeField]
-    private Transform target = default;
+    private Transform target;
 
     void FixedUpdate()
     {

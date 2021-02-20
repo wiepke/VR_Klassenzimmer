@@ -4,10 +4,10 @@ using UnityEngine;
 public class PosterScript : MonoBehaviour
 {
     [SerializeField]
-    GameObject BoardCollider = default;
+    GameObject BoardCollider;
 
     [SerializeField]
-    GameObject PosterContent = default;
+    GameObject PosterContent;
 
     private Rigidbody rb;
 
@@ -36,8 +36,7 @@ public class PosterScript : MonoBehaviour
         {
             rb = GetComponent<Rigidbody>();
             rb.useGravity = true;
-            rb.isKinematic = false;
-        }
+        }    
     }
 
     public IEnumerator PosterFade()

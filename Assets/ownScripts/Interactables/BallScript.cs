@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BallScript : MonoBehaviour {
-    Rigidbody rigid;
+    private Rigidbody rigid;
     private System.Random rnd = new System.Random();
 
     /// <summary>
     /// Force of the throw on release.
     /// </summary>
-    public float ThrowForce = 500f;
+    private float throwForce = 500f;
 
     /// <summary>
     /// Max deviation added ontop of throw direction.
     /// </summary>
-    public float Deviation = 0.1f;
+    private float deviation = 0.1f;
 
     public void ReleaseMe(Vector3 direction)
     {
@@ -23,7 +23,7 @@ public class BallScript : MonoBehaviour {
         rigid.useGravity = true;
         rigid.isKinematic = false;
 
-        direction = direction.normalized + Random.insideUnitSphere * Deviation;
-        rigid.AddForce(direction * ThrowForce);
+        direction = direction.normalized + Random.insideUnitSphere * deviation;
+        rigid.AddForce(direction * throwForce);
     }
 }

@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Steve
   IsMale: 1
-  IsTall: 1
+  IsTall: 0
   ModelName: Male2
   IsLeftHanded: 0

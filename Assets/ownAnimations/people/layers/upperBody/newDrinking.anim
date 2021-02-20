@@ -54312,10 +54312,10 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.51666665
+  - time: 0.13333334
     functionName: attachPrimary
     data: 
-    objectReferenceParameter: {fileID: 1705129010167144, guid: bfa7e8189ab181843b9ac106678a628a,
+    objectReferenceParameter: {fileID: 1705129010167144, guid: 2ea7cee813a08804bb44fe189921e2a9,
       type: 3}
     floatParameter: 0
     intParameter: 0
@@ -54330,7 +54330,7 @@ AnimationClip:
   - time: 1.7833333
     functionName: attachSecondary
     data: 
-    objectReferenceParameter: {fileID: 1705129010167144, guid: bfa7e8189ab181843b9ac106678a628a,
+    objectReferenceParameter: {fileID: 1705129010167144, guid: 2ea7cee813a08804bb44fe189921e2a9,
       type: 3}
     floatParameter: 0
     intParameter: 0
@@ -54352,7 +54352,7 @@ AnimationClip:
   - time: 3.0333333
     functionName: attachPrimary
     data: 
-    objectReferenceParameter: {fileID: 1705129010167144, guid: bfa7e8189ab181843b9ac106678a628a,
+    objectReferenceParameter: {fileID: 1705129010167144, guid: 2ea7cee813a08804bb44fe189921e2a9,
       type: 3}
     floatParameter: 0
     intParameter: 0

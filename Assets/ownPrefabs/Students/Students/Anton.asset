@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Anton
   IsMale: 1
-  IsTall: 1
+  IsTall: 0
   ModelName: Male4
-  IsLeftHanded: 0
+  IsLeftHanded: 1

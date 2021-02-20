@@ -16,4 +16,4 @@ MonoBehaviour:
   IsMale: 0
   IsTall: 0
   ModelName: Female7
-  IsLeftHanded: 0
+  IsLeftHanded: 1

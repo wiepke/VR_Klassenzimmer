@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { init, syncBehaviour } from '../classState/studentsSlice'
-import { init as canvasInit } from '../classState/canvasSlice'
+import { init as canvasInit } from '../classCanvas/canvasSlice'
+import {updateReplayFiles, setLengthReplay} from '../replay/replaySlice'
 
 export const websocketSlice = createSlice({
   name: 'websocket',
@@ -51,8 +52,10 @@ export const teacher = new Teacher()
 
 const messageHandlers = dispatch => ({
   bootstrap: ({ students }) => { dispatch(init(students)); dispatch(canvasInit(students)) },
-  behave: ({ student, behaviour }) => dispatch(syncBehaviour({ id: student, behaviour })),
-  syncTeacher: pos => teacher.setTeacherPos(pos)
+  behave: student => dispatch(syncBehaviour(student)),
+  syncTeacher: pos => teacher.setTeacherPos(pos),
+  replay: replayInfoUnity => dispatch(updateReplayFiles(replayInfoUnity.replayNames)),
+  setReplayLength: replayInfoUnity => dispatch(setLengthReplay(replayInfoUnity.replayLength))
 })
 
 const handleMessage = (action, dispatch) => {

@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Lea
   IsMale: 0
-  IsTall: 1
+  IsTall: 0
   ModelName: Female1
   IsLeftHanded: 0

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 
 public static class ClassController
@@ -15,17 +16,21 @@ public static class ClassController
             if (behaviourControllers == null)
             {
                 behaviourControllers = new List<BehaviourController>();
-                foreach (GameObject s in AllStudentAttributes.allStudentSlots)
+                foreach (GameObject s in AllStudentAttributes.allStudents)
                     behaviourControllers.Add(s.GetComponent<BehaviourController>());
             }
             return behaviourControllers;
         }
     }
 
+    // for replays; replaymanager will listen to this event
+    public delegate void replayHandler(BehaviourController bc, string performedBehaviour);
+    public static event replayHandler onStudentBehaviour;
+
     public static void DisruptClass(string behaviour)
     {
         foreach (BehaviourController bc in Behaviours)
-            bc.HandleBehaviour(behaviour);
+            bc.Disrupt(behaviour);
     }
 
     public static void DisruptClass(Disruption d)
@@ -46,7 +51,14 @@ public static class ClassController
     // Wrapper around DisruptStudent for the sake of convenience
     private static void DisruptStudent(BehaviourController bc, string behaviour)
     {
-        bc.HandleBehaviour(behaviour);
+        bc.Disrupt(behaviour);
+        Debug.Log(bc);
+        Debug.Log(behaviour);
+
+        if(onStudentBehaviour != null)
+        {
+            onStudentBehaviour.Invoke(bc, behaviour);
+        }
     }
 
     public static void DisruptStudent(GameObject student, string behaviour)
@@ -56,8 +68,8 @@ public static class ClassController
 
     public static GameObject GetRandomStudent()
     {
-        int randomStudentSlot = Random.Range(0, AllStudentAttributes.allStudentSlots.Length);
-        return AllStudentAttributes.allStudentSlots[randomStudentSlot];
+        int randomStudentId = Random.Range(0, AllStudentAttributes.allStudents.Length);
+        return AllStudentAttributes.allStudents[randomStudentId];
     }
 
     public static void SetRandomDisturbance(GameObject student, int level = 0)
@@ -111,5 +123,10 @@ public static class ClassController
                 return;
             }
         }
+    }
+
+    public static void TurnToTeacher(GameObject student)
+    {
+        student.GetComponent<IKControl>().TurnTo(AllStudentAttributes.Teacher.transform);
     }
 }

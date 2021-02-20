@@ -2,7 +2,7 @@ import React from 'react'
 //import StudentState from './StudentState'
 import ToggleAll from './ToggleAll'
 import BehaviourControls from './BehaviourControls'
-import ClassCanvas from './ClassCanvas'
+import ClassCanvas from '../classCanvas/ClassCanvas'
 
 const ClassState = () => {
   return (

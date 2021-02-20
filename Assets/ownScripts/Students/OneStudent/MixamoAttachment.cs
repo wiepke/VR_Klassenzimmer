@@ -7,7 +7,7 @@ public class MixamoAttachment : MonoBehaviour
 
     private GameObject item;
 
-    private bool IsLefty;
+    private bool isLefty;
 
     // Start is called before the first frame update
     void Start()
@@ -15,15 +15,15 @@ public class MixamoAttachment : MonoBehaviour
         attachmentPointRight = transform.Find("mixamorig:Hips")
             .Find("mixamorig:Spine").GetChild(0).GetChild(0)
             .Find("mixamorig:RightShoulder").GetChild(0).GetChild(0).GetChild(0);
-
+        
 
         attachmentPointLeft = transform.Find("mixamorig:Hips")
             .Find("mixamorig:Spine").GetChild(0).GetChild(0)
             .Find("mixamorig:LeftShoulder").GetChild(0).GetChild(0).GetChild(0);
 
-        IsLefty = GetComponent<Animator>().GetBool("isLeftHanded"); 
+        isLefty = GetComponent<Animator>().GetBool("isLeftHanded"); 
         
-        if (IsLefty)
+        if (isLefty)
         {
             var temp = attachmentPointLeft;
             attachmentPointLeft = attachmentPointRight;
@@ -39,18 +39,28 @@ public class MixamoAttachment : MonoBehaviour
         switch (item.name) 
         {
             case "Cola Can(Clone)":
-                t.localPosition = new Vector3(0.051f, 0.105f, 0.04f); // TODO right sequence?
-                t.localEulerAngles = new Vector3(0, 0, 90);
+                t.localPosition = new Vector3(-0.06f, 0.11f, 0.04f); // TODO right sequence?
+                t.localEulerAngles = new Vector3(0, 0, 270);
                 break;
             case "pen(Clone)":
-                t.localPosition = new Vector3(-0.1049f, 0.1188f, 0.0196f);
-                t.localEulerAngles = new Vector3(11, 230, 0);
+                if (isLefty)
+                {
+                    t.localPosition = new Vector3(0.04f, 0.1f, 0.05f);
+                    t.localEulerAngles = new Vector3(158, -20, 0);
+                }
+                else
+                {
+                    t.localPosition = new Vector3(-0.04f, 0.1f, 0.05f);
+                    t.localEulerAngles = new Vector3(158, 20, 0);
+                }
+                break;
+            case "Apple(Clone)":
+                t.localPosition = new Vector3(-0.01f, 0.09f, 0.06f);
                 break;
         }
-
         // Mirror items for lefties. TODO Correct axis?
-        //Vector3 scale = t.localScale;
-        //scale.y *= IsLefty ? -1 : 1;
+        Vector3 scale = t.localScale;
+        scale.y *= isLefty ? -1 : 1;
     }
     public void attachSecondary(GameObject attachment)
     {
@@ -60,18 +70,18 @@ public class MixamoAttachment : MonoBehaviour
         switch (item.name) 
         {
             case "Cola Can(Clone)":
-                t.localPosition = new Vector3(-0.056f, 0.138f, 0.044f); // TODO right sequence?
-                t.localEulerAngles = new Vector3(0, 0, -90);
+                t.localPosition = new Vector3(-0.04f, 0.11f, 0.05f); // TODO right sequence?
+                t.localEulerAngles = new Vector3(0, 0, 270);
                 break;
             case "pen(Clone)":
-                t.localPosition = new Vector3(0.0847f, 0.1631f, -0.0446f);
-                t.localEulerAngles = new Vector3(10, 166, 0);
+                t.localPosition = new Vector3(0.21f, 0.07f, -0.1f);
+                t.localEulerAngles = new Vector3(200, 10, 0);
                 break;
         }
 
         // Mirror items for lefties. TODO Correct axis?
-        //Vector3 scale = t.localScale;
-        //scale.y *= IsLefty ? -1 : 1;
+        Vector3 scale = t.localScale;
+        scale.y *= isLefty ? -1 : 1;
     }
 
     public void detach()

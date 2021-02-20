@@ -13,9 +13,10 @@ public class vrselfControl : MonoBehaviour
     public bool ikActive = false;
     public Transform leftControler = null;
     public Transform rightControler = null;
-    public CameraSelector cameraSelector;
+    public Transform lookObj = null;
+    private Vector3 oldPosition;
     public float groundLevel = 0.1f;
-    private Transform lookObj = null;
+    bool isMoving;
 
     private Vector3 RightFootWork;
     private Vector3 LeftFootWork;
@@ -27,40 +28,141 @@ public class vrselfControl : MonoBehaviour
     private double bodyRotation;
     public float headHeight = 0.42f;        //since vrself does not have a head but a camera, the camera needs to hover over the neck by (headHeight)
     public float headWidth = 0.1f;         //just hovering over the neck would lete you have insight on your own throat, the headWidth controls distance of your eyes to your body center
+    //private float defaultHeight = 1.8f;
+    private float handOffset = 0.5f;        //the end of the controlers are inside of your hands, so an offset can change position of your hands.
 
     private int getPositionInt = 0;
     [SerializeField]
-    private int getPositionEveryNFrames = 10;
+    private int getPositionEveryNFrames = 5;
     private List<Vector2> positionTracking = new List<Vector2>();
+
+    private bool isLoading = false;
 
     void Start()
     {
-        lookObj = AllStudentAttributes.Teacher;
+        isMoving = false;
+        oldPosition = new Vector3(lookObj.position.x - headWidth * Convert.ToSingle(Math.Sin(bodyRotation)), lookObj.position.y - headHeight, lookObj.position.z - headWidth * Convert.ToSingle(Math.Cos(bodyRotation)));
         animator = GetComponent<Animator>();        //get vrself
         //float headHeight = camera.transform.localPosition.y;
         //float scale = defaultHeight / headHeight;
         //transform.localScale = Vector3.one * scale;
     }
 
+
+    public Vector3 GetOldPosition()
+    {
+        return oldPosition;
+    }
+
+    public Vector3 GetRightFootWork()
+    {
+        return RightFootWork;
+    }
+
+    public Vector3 GetLeftFootWork()
+    {
+        return LeftFootWork;
+    }
+
+    public Vector3 GetLeftHandPosition()
+    {
+        return leftHandPosition;
+    }
+
+    public Vector3 GetRightHandPosition()
+    {
+        return rightHandPosition;
+    }
+
+    public Quaternion GetRightHandRotation()
+    {
+        return rightHandRotation;
+    }
+
+    public Quaternion GetLeftHandRotation()
+    {
+        return leftHandRotation;
+    }
+
+    public double GetBodyRotation()
+    {
+        return bodyRotation;
+    }
+
+
     private void Update()
     {
-        lookObj = cameraSelector.activeCameraObject.transform;
         getPositionInt++;
         if (lookObj != null)
         {
             bodyRotation = Math.PI / 180 * lookObj.eulerAngles.y;
+            //start the "moving" animation, when your position alters
+            if (getPositionInt == getPositionEveryNFrames / 2)
+            {
+                if (!isMoving)
+                {
+                    if (Vector3.Distance(oldPosition, transform.position) > 0.02f)
+                    {
+                        isMoving = true;
+                        animator.SetTrigger("moving");
+                    }
+                }
+                else
+                {
+                    if (Vector3.Distance(oldPosition, transform.position) < 0.02f)
+                    {
+                        isMoving = false;
+                        animator.SetTrigger("standing");
+                    }
+                }
+            }
 
-            // compute position.
-            transform.position = new Vector3(lookObj.position.x - headWidth * Convert.ToSingle(Math.Sin(bodyRotation)), lookObj.position.y - headHeight, lookObj.position.z - headWidth * Convert.ToSingle(Math.Cos(bodyRotation)));
-            // compute rotation.
-            transform.rotation = Quaternion.Euler(0, lookObj.eulerAngles.y, 0);
+            if (isLoading == false)
+            {
+                // compute position.
+                transform.position = new Vector3(lookObj.position.x - headWidth * Convert.ToSingle(Math.Sin(bodyRotation)), lookObj.position.y - headHeight, lookObj.position.z - headWidth * Convert.ToSingle(Math.Cos(bodyRotation)));
+                // compute rotation.
+                transform.rotation = Quaternion.Euler(0, lookObj.eulerAngles.y, 0);
+            }
         }
         if (getPositionInt == getPositionEveryNFrames)
         {
             Vector2 currentPosition = new Vector2(transform.position.x, transform.position.z);
             positionTracking.Add(currentPosition);
+            oldPosition = transform.position;
             getPositionInt = 0;
         }
+    }
+
+    public void ReconstructFrame(RecordedFrame currentFrame)
+    {
+        isLoading = true;
+
+        this.transform.position = currentFrame.vrSelf.GetReconstructedPosition();
+        this.transform.eulerAngles = currentFrame.vrSelf.GetReconstructedRotation();
+
+        this.leftControler.position = currentFrame.leftControler.GetReconstructedPosition();
+        this.leftControler.eulerAngles = currentFrame.leftControler.GetReconstructedRotation();
+
+        this.rightControler.position = currentFrame.rightControler.GetReconstructedPosition();
+        this.rightControler.eulerAngles = currentFrame.rightControler.GetReconstructedRotation();
+
+        this.lookObj.position = currentFrame.lookObj.GetReconstructedPosition();
+        this.lookObj.eulerAngles = currentFrame.lookObj.GetReconstructedRotation();
+
+        this.oldPosition = currentFrame.oldPosition;
+        this.RightFootWork = currentFrame.RightFootWork;
+        this.LeftFootWork = currentFrame.LeftFootWork;
+        this.rightHandPosition = currentFrame.rightHandPosition;
+        this.leftHandPosition = currentFrame.leftHandPosition;
+        this.rightHandRotation = currentFrame.rightHandRotation;
+        this.leftHandRotation = currentFrame.leftHandRotation;
+        this.bodyRotation = currentFrame.bodyRotation;
+    }
+
+    public void StopLoading()
+    {
+        isLoading = false;
     }
 
     //a callback for calculating IK
@@ -115,9 +217,9 @@ public class vrselfControl : MonoBehaviour
         }
     }
 
-    private void OnDisable()
+    public void EndPositionTracking()
     {
-        MenuDataHolder.evaluationMap = positionTracking;
+        MenuDataHolder.EvaluationMap = positionTracking;
         MenuMethods.Save();
     }
 

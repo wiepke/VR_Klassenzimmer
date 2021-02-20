@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-public class thrower : MonoBehaviour {
-    GameObject theBall;
-    Transform attachmentPoint;
+public class Thrower : MonoBehaviour {
+    private GameObject theBall;
+    private Transform attachmentPoint;
 
     public void ThrowBall()
     {
@@ -18,7 +18,7 @@ public class thrower : MonoBehaviour {
             GetChild(1).    //RightHandMiddle1
             GetChild(0);    //RightHandMiddle2
         theBall = Instantiate(theBall, attachmentPoint.position, Quaternion.identity);
-        theBall.GetComponent<BallScript>().ReleaseMe(AllStudentAttributes.Teacher.transform.position -  theBall.transform.position);
+        theBall.GetComponent<BallScript>().ReleaseMe(AllStudentAttributes.Teacher.transform.position - theBall.transform.position);
     }
 
 }

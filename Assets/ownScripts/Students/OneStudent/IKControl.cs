@@ -5,7 +5,7 @@ using System.Collections;
 [RequireComponent(typeof(Animator))]
 public class IKControl : MonoBehaviour
 {
-    public static float ViewAngle = 80f; // 180° field of vision 
+    public static float ViewAngle = 60f; // 120° field of vision 
     public bool IkActive = true; 
     public bool Follow { get; set; }
     public bool MoveHand { get; set; } = true;
@@ -43,8 +43,7 @@ public class IKControl : MonoBehaviour
 
     public void TurnTo(Transform target) 
     {
-        //var turnAround = Vector3.Dot(transform.forward, (target.position - transform.position).normalized) > 0;
-        bool turnAround = false; //todo: unity seems to have problems rotating "transform.forward" in this version, so turnAround doesn't make sense
+        var turnAround = Vector3.Dot(transform.forward, (target.position - transform.position).normalized) > 0;
 
         if (turnAround) {
             animator.SetFloat("Horizontal", Vector3.Dot(

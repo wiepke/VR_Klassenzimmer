@@ -6,31 +6,30 @@ using UnityEngine;
 
 public class MenuMethods
 {
-
     public static void Save()
     {
-        List<string[]> rowData = new List<string[]>();
+        var rowData = new List<string[]>();
 
         // Creating First row of titles manually..
-        string[] rowDataTemp = new string[3];
+        var rowDataTemp = new string[3];
         rowDataTemp[0] = "DataCount";
         rowDataTemp[1] = "PositionX";
         rowDataTemp[2] = "PositionY";
         rowData.Add(rowDataTemp);
 
         // You can add up the values in as many cells as you want.
-        for (int i = 0; i < MenuDataHolder.evaluationMap.Count - 1; i++)
+        for (int i = 0; i < MenuDataHolder.EvaluationMap.Count - 1; i++)
         {
             rowDataTemp = new string[3];
             rowDataTemp[0] = "" + i; // DataCount
-            rowDataTemp[1] = "" + MenuDataHolder.evaluationMap[i].x; // PositionX
-            rowDataTemp[2] = "" + MenuDataHolder.evaluationMap[i].y; // PositionY
+            rowDataTemp[1] = "" + MenuDataHolder.EvaluationMap[i].x; // PositionX
+            rowDataTemp[2] = "" + MenuDataHolder.EvaluationMap[i].y; // PositionY
             rowData.Add(rowDataTemp);
 
-            MenuDataHolder.walkedDistance += Vector2.Distance(MenuDataHolder.evaluationMap[i], MenuDataHolder.evaluationMap[i + 1]);
+            MenuDataHolder.WalkedDistance += Vector2.Distance(MenuDataHolder.EvaluationMap[i], MenuDataHolder.EvaluationMap[i + 1]);
         }
 
-        string[][] output = new string[rowData.Count][];
+        var output = new string[rowData.Count][];
 
         for (int i = 0; i < output.Length; i++)
         {
@@ -38,9 +37,9 @@ public class MenuMethods
         }
 
         int length = output.GetLength(0);
-        string delimiter = ",";
+        var delimiter = ",";
 
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
 
         for (int index = 0; index < length; index++)
             sb.AppendLine(string.Join(delimiter, output[index]));
@@ -56,7 +55,7 @@ public class MenuMethods
     private static string getPath()
     {
         #if UNITY_EDITOR
-        return Application.dataPath + "/Student_Movement/" + "Student" + MenuDataHolder.repetitionCount + ".csv";
+        return Application.dataPath + "/Student_Movement/" + "Student" + MenuDataHolder.RepetitionCount + ".csv";
         #elif UNITY_ANDROID
         return Application.persistentDataPath+"Saved_data.csv";
         #elif UNITY_IPHONE

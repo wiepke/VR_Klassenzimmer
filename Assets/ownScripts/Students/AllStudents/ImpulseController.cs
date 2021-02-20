@@ -4,7 +4,7 @@ using UnityEngine;
 public static class ImpulseController
 {
     private static int levelOfDistortion = 0;
-    private static List<GameObject> impulsedStudents = new List<GameObject>();
+    private static List<GameObject> impulsedStudents;
     private static UnityWaiter waiter;
 
     public static void SetupImpulseController(UnityWaiter unityWaiter)
@@ -14,61 +14,44 @@ public static class ImpulseController
 
     public static void HandleImpulseNetworkRequest(ImpulseGiven impulseGiven)
     {
-        var studentSlots = new List<GameObject>();
+        var students = new List<GameObject>();
         var ids = new HashSet<string>(impulseGiven.students);
-        foreach (GameObject studentSlot in AllStudentAttributes.allStudentSlots)
+
+        foreach (GameObject student in AllStudentAttributes.allStudents)
         {
-            if (ids.Count == 0)
+            if (ids.Contains(student.GetComponent<StudentController>().Id))
             {
-                if (impulseGiven.impulse == "evoke")
+                if (impulseGiven.impulse != "evoke")
                 {
-                    if (impulsedStudents.Count == 0)
-                    {
-                        Debug.LogWarning("es wurde noch kein Impuls gesetzt");
-                        return;
-                    }
-                    EvokeImpulse(impulsedStudents[0]);
+                    students.Add(student);
                 }
                 else
                 {
-                    HandleImpulseWithRandomStudents(impulseGiven.impulse);
-                }
-                return;
-            }
-            else
-            {
-
-                var sc = studentSlot.GetComponent<StudentController>();
-                if (ids.Contains(sc.Id))
-                {
-                    if (impulseGiven.impulse != "evoke")
-                    {
-                        studentSlots.Add(studentSlot);
-                    }
-                    else
-                    {
-                        EvokeImpulse(studentSlot);
-                        return;
-                    }
+                    EvokeImpulse(student);
+                    return;
                 }
             }
         }
-        HandleImpulse(studentSlots, impulseGiven.impulse);
+
+        impulsedStudents = students;
+        HandleImpulse(students, impulseGiven.impulse);
     }
 
     public static void HandleImpulseWithRandomStudents(string impulse, int n = 4)
     {
-        List<GameObject> randomStudentSlots = new List<GameObject>();
+        var randomStudents = new List<GameObject>();
         for (int i = 0; i < n; i++)
         {
-            randomStudentSlots.Add(ClassController.GetRandomStudent());
+            randomStudents.Add(ClassController.GetRandomStudent());
         }
-        HandleImpulse(randomStudentSlots, impulse);
+        impulsedStudents = randomStudents;
+        HandleImpulse(randomStudents, impulse);
     }
 
     public static void HandleImpulse(List<GameObject> students, string impulse)
     {
         GraphToTreeConverter.StructureTreeNode nextNode;
+
         switch (impulse)
         {
             case "none":
@@ -84,7 +67,7 @@ public static class ImpulseController
                 nextNode = StructureTreeHandler.GetNextNode(ImpulseType.Negative);
                 break;
             default:
-                Debug.LogWarning("unknown Impulse: " + impulse);
+                Debug.LogWarning("unknown Impulse");
                 return;
         }
 
@@ -120,45 +103,47 @@ public static class ImpulseController
         }
     }
 
-    public static void PrepareImpulse(List<GameObject> studentSlots, string impulse, GraphToTreeConverter.StructureTreeNode nextNode)
+    public static void PrepareImpulse(List<GameObject> students, string impulse, GraphToTreeConverter.StructureTreeNode nextNode)
     {
-        foreach (GameObject studentSlot in studentSlots)
+        foreach (BehaviourController bc in ClassController.Behaviours)
         {
-            impulsedStudents.Add(studentSlot);
-            studentSlot.GetComponent<BehaviourController>().HandleBehaviour("RaiseArm");
+            bc.Disrupt("RaiseArm");
         }
     }
 
-    public static void EvokeImpulse(GameObject studentSlot)
+    public static void EvokeImpulse(GameObject student)
     {
-        if (StructureTreeHandler.currentNode != null && studentSlot != null)
+        if (StructureTreeHandler.currentNode != null && student != null)
         {
             foreach (GameObject impulsedStudent in impulsedStudents)
             {
-                if (impulsedStudent != studentSlot)
+                if (impulsedStudent != student)
                 {
                     BehaviourController.Disrupt(impulsedStudent, "Idle");
-                    impulsedStudents = new List<GameObject>();
                 }
             }
-            string pathOfAudioFile = StructureTreeHandler.GetPathOfAudioFile(StructureTreeHandler.stc[StructureTreeHandler.currentNode], studentSlot);
+            string pathOfAudioFile = StructureTreeHandler.GetPathOfAudioFile(StructureTreeHandler.stc[StructureTreeHandler.currentNode], student);
             if (pathOfAudioFile != "")
             {
                 {
-                    BehaviourController bc = studentSlot.GetComponent<BehaviourController>();
+                    BehaviourController bc = student.GetComponent<BehaviourController>();
 
                     //there should be an AudioClip, so we look for it
-                    waiter.StartCoroutine(waiter.GetAudioClip(pathOfAudioFile, studentSlot, noImpulseNeeded => {
-                        if (noImpulseNeeded != null) // Note: "!= null" is true after the coroutine finished. do not remove
-                        {
-                            bc.HandleBehaviour("Idle");
+                    waiter.StartCoroutine(waiter.GetAudioClip(pathOfAudioFile, student, noImpulseNeeded => {
+                        //if (noImpulseNeeded != null) // FIXME: The "!= null" can probably be removed
+                        //{
+                            bc.Disrupt("Idle");
                             //if there is another student reaction, it will be triggered after "none"-impulse
                             HandleImpulseWithRandomStudents("none");
-                        }
+                        //}
                     }));
 
-                    bc.ik.TurnTo(AllStudentAttributes.Teacher.transform);
-                    bc.PlayImpulse();
+                    //look for animations to illustrate talking students and get a random animationclip
+                    float randomImpulse = Random.value;
+
+                    student.GetComponent<Animator>().SetFloat("randomImpulse", randomImpulse);
+                    ClassController.TurnToTeacher(student);
+                    bc.Disrupt("Impulse");
                 }
             }
 

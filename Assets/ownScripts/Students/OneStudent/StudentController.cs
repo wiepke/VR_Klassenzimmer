@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
 using System;
-using System.Collections.Generic;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -29,8 +28,8 @@ public class StudentController : MonoBehaviour
 
         // TODO: Just add to prefabs/objects? Won't do this until merging scenes is less of a pain
         Model.AddComponent<MixamoAttachment>();
-        Model.AddComponent<playSound>();
-        Model.AddComponent<thrower>();
+        Model.AddComponent<PlaySound>();
+        Model.AddComponent<Thrower>();
         Model.AddComponent<Blinking>();
         
         var ik = Model.AddComponent<IKControl>();
@@ -38,13 +37,11 @@ public class StudentController : MonoBehaviour
         Behaviour = GetComponent<BehaviourController>();
         Behaviour.Init(this);
 
-        // Maybe handle in separate components as child objects?
-        if (MenuDataHolder.isAutomaticIntervention)
-            GetComponent<SphereCollider>().enabled = true;
-        else
-            GetComponent<BoxCollider>().enabled = true;
+        GetComponent<SphereCollider>().enabled = true;
 
-        Behaviour.ConversationPartner = FindConversationPartner();
+        // TODO: Use algorithm instead
+        string ConversationPartnerPlace = name.Contains("L") ? name.Replace("L", "R") : name.Replace("R", "L");
+        Behaviour.ConversationPartner = GameObject.Find(ConversationPartnerPlace).transform;
 
         try
         {
@@ -61,26 +58,6 @@ public class StudentController : MonoBehaviour
             // supress warning as generated rooms don't use childed name tag
             // Debug.LogWarning("Searching for nameShield failed for Student: " + Name);
         }
-    }
-
-    private Transform FindConversationPartner()
-    {
-        Transform closestStudent = null;
-        float closestDistanceSqr = Mathf.Infinity;
-        List<GameObject> possiblePartners = new List<GameObject>(AllStudentAttributes.allStudentSlots);
-        possiblePartners.Remove(gameObject);
-        Vector3 currentPosition = transform.position;
-        foreach (GameObject potentialPartner in possiblePartners)
-        {
-            Vector3 directionToPartner = potentialPartner.transform.position - currentPosition;
-            float dSqrToTarget = directionToPartner.sqrMagnitude;
-            if (dSqrToTarget < closestDistanceSqr)
-            {
-                closestDistanceSqr = dSqrToTarget;
-                closestStudent = potentialPartner.transform;
-            }
-        }
-        return closestStudent;
     }
 }
 

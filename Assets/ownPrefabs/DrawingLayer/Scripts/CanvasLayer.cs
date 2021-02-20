@@ -48,7 +48,7 @@ public class CanvasLayer : MonoBehaviour
 
     public Texture2D UpdateMask()
     {
-        if (Mask == null)
+        if (!Mask)
         {
             Mask = new Texture2D(CanvasSize.x, CanvasSize.y);
             Clear();
@@ -63,7 +63,7 @@ public class CanvasLayer : MonoBehaviour
 
         change = false;
         Mask.Apply();
-        //Mask.alphaIsTransparency = true;  //this lines prevents project from building. works fine in editor though
+        Mask.alphaIsTransparency = true;
 
         r.GetPropertyBlock(mpb);
         mpb.SetTexture("Mask", Mask);

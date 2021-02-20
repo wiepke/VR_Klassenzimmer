@@ -36,8 +36,54 @@ public class NetworkController : MonoBehaviour {
         );
         Handler.Events.RegisterCallback(
             "themeChange",
-            json => ConfigLoader.HandleThemeChange(JsonUtility.FromJson<ThemeChange>(json).theme.ToString(), waiter)
+            json => ConfigLoader.HandleThemeChange(JsonUtility.FromJson<ThemeChange>(json).theme.ToString())
         );
+
+
+        // replay controller
+        // TO DO: Reduce amount of callbacks
+        Handler.Events.RegisterCallback(
+            "requestReplays",
+            json => ReplayController.GetInstance().SendReplayFilesToSocket()
+        );
+        Handler.Events.RegisterCallback(
+            "startRecording",
+            json => ReplayController.GetInstance().StartRecording()
+        );
+        Handler.Events.RegisterCallback(
+            "stopRecording",
+            json => ReplayController.GetInstance().StopRecording()
+        );
+        Handler.Events.RegisterCallback(
+            "startLoading",
+            json => ReplayController.GetInstance().StartLoading(JsonUtility.FromJson<ReplayJSONData>(json).currentReplay)
+        );
+        Handler.Events.RegisterCallback(
+            "stopLoading",
+            json => ReplayController.GetInstance().StopLoading()
+        );
+        Handler.Events.RegisterCallback(
+            "pauseLoading",
+            json => ReplayController.GetInstance().PauseLoading()
+        );
+        Handler.Events.RegisterCallback(
+            "continueLoading",
+            json => ReplayController.GetInstance().ContinueLoading()
+        );
+        Handler.Events.RegisterCallback(
+            "switchPerspective",
+            json => ReplayController.GetInstance().SwitchPerspective(JsonUtility.FromJson<ReplayJSONData>(json).id)
+        );
+        Handler.Events.RegisterCallback(
+            "resetPerspective",
+            json => ReplayController.GetInstance().ResetPoV()
+        );
+        Handler.Events.RegisterCallback(
+            "updateReplayTime",
+            json => ReplayController.GetInstance().UpdateReplayTime(JsonUtility.FromJson<ReplayJSONData>(json).startTime)
+        );
+
+
         //StartCoroutine(StartClient()); //Does not work, since cmd is closing instantaniously
     }
 

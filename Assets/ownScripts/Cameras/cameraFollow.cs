@@ -6,19 +6,18 @@ using System.Collections.Generic;
 public class cameraFollow : MonoBehaviour
 {
     [SerializeField]
-    private Transform target = default;
+    private Transform target;
 
     [SerializeField]
     private float smoothSpeed = 0.125f;
 
     [SerializeField]
-    private Vector3 offset = default;
+    private Vector3 offset;
 
     private double bodyRotation;
 
-    void Update()
+    void FixedUpdate()
     {
-        target = AllStudentAttributes.Teacher;
         bodyRotation = Math.PI / 180 * target.eulerAngles.y;
         Vector3 desiredPosition = new Vector3(  target.position.x - offset.x * Convert.ToSingle(Math.Sin(bodyRotation)),
                                                 target.position.y,

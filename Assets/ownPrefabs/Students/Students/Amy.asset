@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Amy
   IsMale: 0
-  IsTall: 1
+  IsTall: 0
   ModelName: Female_c
   IsLeftHanded: 0

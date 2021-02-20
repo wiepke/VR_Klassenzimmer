@@ -1,6 +1,11 @@
-﻿using UnityEngine.XR;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Valve.VR;
+using Valve.VR.Extras;
 
 
 public class InGameShortcuts : MonoBehaviour
@@ -10,7 +15,8 @@ public class InGameShortcuts : MonoBehaviour
     public Camera wall;
     public Camera follow;
 
-    public MasterController mc;
+    public SteamVR_Action_Boolean menuButton;
+    public SteamVR_Action_Boolean LaserPointerActivate;
 
     public GameObject LaserPointerGameObject;
     private bool isActive = false;
@@ -18,13 +24,18 @@ public class InGameShortcuts : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        keyboardControls();
+        KeyboardControls();
+        if (menuButton != null)
+        {
+            ControllerControls();
+        }
     }
 
-    private void keyboardControls()
+    private void KeyboardControls()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            GameObject.Find("VR-self").GetComponent<vrselfControl>().EndPositionTracking();
             SceneManager.LoadScene(0);
         }
         if (Input.GetKeyDown(KeyCode.Keypad0) || Input.GetKeyDown(KeyCode.Alpha0))
@@ -69,7 +80,7 @@ public class InGameShortcuts : MonoBehaviour
         }
     }
 
-    private void controllerControls()
+    private void ControllerControls()
     {
         /*               default is not defined due to missing connection to a VR Headset
          *                                  "Teleport" resembles the Input-Name of your targeted Input
@@ -80,20 +91,16 @@ public class InGameShortcuts : MonoBehaviour
             print("Teleport triggert");
         }
         */
-        bool menuButtonPressed;
-        mc.m_LeftInputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out menuButtonPressed);
-        if (menuButtonPressed)
+        if (menuButton.GetStateDown(SteamVR_Input_Sources.Any))
         {
             SceneManager.LoadScene(0);
         }
         
-        bool triggerButtonPressed;
-        mc.m_LeftInputDevice.TryGetFeatureValue(CommonUsages.triggerButton, out triggerButtonPressed);
-        if (triggerButtonPressed && !MenuDataHolder.isAutomaticIntervention)
+        /*if (LaserPointerActivate.GetStateDown(SteamVR_Input_Sources.Any))
         {
             isActive = !isActive;
             LaserPointerGameObject.SetActive(isActive);
-        }
+        }*/
         
         /* checks any controller for SteamVR_Action_Vector2 properties to GetAxis and save in touchpadValue
         Vector2 touchpadValue = touchPadAction.GetAxis(SteamVR_Input_Sources.Any);

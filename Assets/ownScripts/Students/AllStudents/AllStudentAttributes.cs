@@ -3,41 +3,41 @@ using UnityEngine;
 
 public static class AllStudentAttributes
 {
-    public static GameObject[] allStudentSlots { get; set; }
-    public static Transform Teacher { get; set; } //is set in Script CameraSelector in GameObject "Teacher"
+    public static GameObject[] allStudents { get; set; }
+    public static Transform Teacher { get; set; }
     public const float degreeOfTurningStudent = 100f;
 
     public static void SetupStudentValues()
     {
-        int tooManyStudents = 0;
+        int missingStudents = 30;
         if (MenuDataHolder.StudentCount != 0)
         {
-            tooManyStudents = 30 - MenuDataHolder.StudentCount;
+            missingStudents = MenuDataHolder.StudentCount;
         }
 
-        allStudentSlots = deactivateNStudents(tooManyStudents);
+        allStudents = PlaceNStudents(missingStudents);
     }
 
-    private static GameObject[] deactivateNStudents(int n)
+    private static GameObject[] PlaceNStudents(int n)
     {
-        List<GameObject> result = new List<GameObject>(GameObject.FindGameObjectsWithTag("StudentSlot"));
+        GameObject[] placedStudents = GameObject.FindGameObjectsWithTag("StudentSlot");
+        var result = new List<GameObject>();
+
         for (int i = 0; i < n; i++)
         {
-            result[i].SetActive(false);
-            result.Remove(result[i]);
+            placedStudents[i].SetActive(true);
+            result.Add(placedStudents[i]);
         }
 
         return result.ToArray();
     }
 
-
-    //todo: this function probably is of no use anymore and can be deleted
     public static BootstrapResponse ClassToJson()
     {
-        StudentRestData[] res = new StudentRestData[allStudentSlots.Length];
+        var res = new StudentRestData[allStudents.Length];
         int i = 0;
 
-        foreach (var student in allStudentSlots)
+        foreach (var student in allStudents)
         {
             var sc = student.GetComponent<StudentController>();
             var bc = student.GetComponent<BehaviourController>();
