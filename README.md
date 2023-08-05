@@ -1,4 +1,6 @@
-# Teach-R (ehemals) VR-Klassenzimmer
+# Teach-R (ehemals VR-Klassenzimmer)
+
+![teaser2](https://github.com/wiepke/VR_Klassenzimmer/assets/63720520/056efd86-fc38-4f81-8a18-75e4b80fa7be)
 
 Sie befindend sich auf der github Seite des institutsübergreifenden Projektes: [Teach-R](https://www.teach-r.de).
 In diesem Repository veröffentlichen wir von Zeit zu Zeit die major release updates für das Projekt. Wenn Sie an kleineren Neuerungen interessiert sind oder sogar Interesse haben mit uns zu entwickeln oder anderweitig Ideen beizusteuern, folgen Sie den Links zum Entwicklungsrepository, welches im GitLab der Uni Potsdam zu finden ist. 
